@@ -1,21 +1,7 @@
 import styled from "styled-components"
-import { Span, Paragraph } from './utils'
-
-const InputGroup = styled.div`
-  margin: 50px 0;
-`
-
-const FormLabel = styled.label`
-  display: block;
-  font-size: 20px;
-`
-
-const Input = styled.input`
-  margin-top: 20px;
-  border: 1px solid #d0d0d0;
-  font-size: 16px;
-  padding: 2px;
-`
+import { Paragraph } from './utils'
+import { InputText, InputRadio } from './formInputs'
+import useInput from '../hooks/useInput'
 
 const Button = styled.button`
   background-color: #fad312;
@@ -26,28 +12,29 @@ const Button = styled.button`
   margin-bottom: 20px
 `
 
-const Form = () => {
+export default function Form () {
+  const { inputsContent, handleChange, handleSubmit } = useInput()
   const inputs = [
     {
       name: 'name',
       id: 'name',
       label: '暱稱',
       type: 'text',
-      placeholder: '您的回答'
+      placeholder: '您的回答',
     },
     {
       name: 'email',
       id: 'email',
       label: '電子郵件',
       type: 'email',
-      placeholder: '您的電子郵件'
+      placeholder: '您的電子郵件',
     },
     {
       name: 'phone-number',
       id: 'phone-number',
       label: '手機號碼',
       type: 'text',
-      placeholder: '您的手機號碼'
+      placeholder: '您的手機號碼',
     },
     {
       id: 'type',
@@ -73,7 +60,7 @@ const Form = () => {
       id: 'know-from',
       label: '怎麼知道這個活動的？',
       type: 'text',
-      placeholder: '您的回答'
+      placeholder: '您的回答',
     },
     {
       name: 'suggestion',
@@ -82,49 +69,19 @@ const Form = () => {
       type: 'text',
       placeholder: '您的回答',
       description: '對活動的一些建議'
-    },
+    }
   ]
 
   return (
-    <form>
-      {/* 這邊 input.map 裡面這一大串不知道怎麼改善比較好 */}
+    <form onSubmit={handleSubmit}>
       {inputs.map((input) => {
-        if (input.id === 'type') {
-          const { id, label, options } = input
-          return (
-            <InputGroup key={id}>
-              <FormLabel>
-                {label}
-                <Span> *</Span>
-              </FormLabel>
-              {options.map((option) => {
-                const { id, name, value, label } = option
-                return (
-                  <div key={id}>
-                    <Input type={input.type} name={name} id={id} value={value} />
-                    <label htmlFor={id}>{label}</label>
-                  </div>
-                )
-              })}
-            </InputGroup>
-          )
-        }
-
-        const { id, label, type, name, placeholder, description } = input
-        return (
-          <InputGroup key={id}>
-            <FormLabel htmlFor={id}>
-              {label}
-              {input.id === 'suggestion' ? <Paragraph>{description}</Paragraph> : <Span> *</Span>}
-            </FormLabel>
-            <Input type={type} id={id} name={name} placeholder={placeholder} />
-          </InputGroup>
-        )
+        const { id } = input
+        return id === 'type' ?
+          <InputRadio key={id} input={input} onChange={handleChange}  /> :
+          <InputText key={id} input={input} content={inputsContent[id]} onChange={handleChange}  />
       })}
       <Button type="submit">提交</Button>
       <Paragraph>請勿透過表單送出您的密碼。</Paragraph>
     </form>
   )
 }
-
-export default Form

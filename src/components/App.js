@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import Form from './components/Form'
-import { Span, Paragraph } from './components/utils'
+import Form from './Form'
+import { Span, Paragraph } from './utils'
 
 const Main = styled.main`
   background: white;
@@ -30,9 +30,9 @@ const Footer = styled.footer`
   }
 `
 
-const App = () => {
+export default function App() {
   return (
-    <div>
+    <>
       <Main>
         <Title>
           新拖延運動報名表單
@@ -49,8 +49,6 @@ const App = () => {
           © 2020 © Copyright. All rights Reserved.
         </Paragraph>
       </Footer>
-    </div>
+    </>
   )
 }
-
-export default App

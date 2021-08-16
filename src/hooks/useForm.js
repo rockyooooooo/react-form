@@ -4,23 +4,28 @@ const useForm = () => {
   const [inputsContent, setInputsContent] = useState({
     name: {
       value: '',
-      isValid: true
+      isValid: true,
+      message: ''
     },
     email: {
       value: '',
-      isValid: true
+      isValid: true,
+      message: ''
     },
     'phoneNumber': {
       value: '',
-      isValid: true
+      isValid: true,
+      message: ''
     },
     type: {
       value: '',
-      isValid: true
+      isValid: true,
+      message: ''
     },
     'knowFrom': {
       value: '',
-      isValid: true
+      isValid: true,
+      message: ''
     },
     suggestion: {
       value: '',
@@ -31,7 +36,7 @@ const useForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target
     updateInputsContent({name, property: 'value'}, value)
-    updateInputsContent({name, property: 'isValid'}, !!inputsContent[name].value)
+    checkInput(name)
   }
 
   const handleSubmit = (e) => {
@@ -54,7 +59,7 @@ const useForm = () => {
     let isFormValid = true
     for(const name in inputsContent) {
       if(name === 'suggestion') continue
-      updateInputsContent({name, property: 'isValid'}, !!inputsContent[name].value)
+      checkInput(name)
       if (!inputsContent[name].isValid) isFormValid = false
     }
     return isFormValid
@@ -63,7 +68,23 @@ const useForm = () => {
   const handleBlur = (e) => {
     const { name } = e.target
     if (name === 'suggestion') return
-    updateInputsContent({name, property: 'isValid'}, !!inputsContent[name].value)
+    checkInput(name)
+  }
+
+  const checkInput = (name) => {
+    updateInputsContent({name, property: 'isValid'}, true)
+    updateInputsContent({name, property: 'message'}, '')
+
+    if (!inputsContent[name].value) {
+      updateInputsContent({name, property: 'message'}, '這裡要填辣！')
+      updateInputsContent({name, property: 'isValid'}, false)
+      return
+    }
+
+    if (name === 'phoneNumber' && /\D/.test(inputsContent[name].value)) {
+      updateInputsContent({name, property: 'message'}, '手機號碼只接受數字辣！')
+      updateInputsContent({name, property: 'isValid'}, false)
+    }
   }
 
   const updateInputsContent = ({ name, property }, value) => {

@@ -18,7 +18,7 @@ export default function InputRadio ({ input, content, onChange, onBlur }) {
             </div>
           )
         })}
-        {!content.isValid && <ErrorMessage>這裡沒填到辣</ErrorMessage>}
+        {!content.isValid && <ErrorMessage>{content.message}</ErrorMessage>}
       </InputGroup>
     )
 }
@@ -32,7 +32,8 @@ InputRadio.propTypes = {
   }),
   content: PropTypes.shape({
     value: PropTypes.string,
-    isValid: PropTypes.bool
+    isValid: PropTypes.bool,
+    message: PropTypes.string
   }),
   onChange: PropTypes.func,
   onBlur: PropTypes.func

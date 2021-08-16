@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import { InputGroup, FormLabel, Span, Input } from "../utils"
+import { InputGroup, FormLabel, Span, Input, ErrorMessage } from "../utils"
 
-export default function InputRadio ({ input }) {
-  const { id, label, options } = input
+export default function InputRadio ({ input, content, onChange, onBlur }) {
+  const { id, type, label, options } = input
     return (
       <InputGroup key={id}>
         <FormLabel>
@@ -13,11 +13,12 @@ export default function InputRadio ({ input }) {
           const { id, name, value, label } = option
           return (
             <div key={id}>
-              <Input type={input.type} name={name} id={id} value={value} />
+              <Input type={type} name={name} id={id} value={value} onChange={onChange} onBlur={onBlur} checked={content.value === value} />
               <label htmlFor={id}>{label}</label>
             </div>
           )
         })}
+        {!content.isValid && <ErrorMessage>這裡沒填到辣</ErrorMessage>}
       </InputGroup>
     )
 }
@@ -28,5 +29,11 @@ InputRadio.propTypes = {
     label: PropTypes.string,
     type: PropTypes.string,
     options:PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string))
-  })
+  }),
+  content: PropTypes.shape({
+    value: PropTypes.string,
+    isValid: PropTypes.bool
+  }),
+  onChange: PropTypes.func,
+  onBlur: PropTypes.func
 }

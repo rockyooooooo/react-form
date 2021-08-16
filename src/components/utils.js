@@ -23,3 +23,8 @@ export const Input = styled.input`
   font-size: 16px;
   padding: 2px;
 `
+
+export const ErrorMessage = styled(Paragraph)`
+  color: #e74149;
+  position: absolute;
+`
